@@ -9,6 +9,7 @@ app.use(morgan(':method :url :status :req[content-length] - :response-time ms :b
 
 const cors = require('cors')
 app.use(cors())
+app.use(express.static('dist'))
 
 let persons = [
   {
@@ -92,7 +93,7 @@ app.get('/', (request, response) => {
     response.json(person)
   })
 
-  const PORT = process.env.PORT || 3001
+  const PORT = 3001
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
