@@ -100,6 +100,7 @@ const App = () => {
     : persons
   
   const addPerson = (event) => {
+
     event.preventDefault()
 
     const names = persons.map(person => person.name)
@@ -125,13 +126,12 @@ const App = () => {
         .modify(personObject)
         .then(response => {
           console.log(response.data)
-        })
+          })
         .catch(error => {
           removePersonFromList(personObject.id)
           setClassName("error")
           setMessage(`Information of ${newName} has already been removed from server`)
         })
-
         const modified_phonebook = [...persons]
         const person_to_change = {...modified_phonebook[person_name_index]}
         person_to_change.number = newNumber
@@ -140,15 +140,6 @@ const App = () => {
         }
     }
     else {
-
-      setClassName("success")
-      setMessage(
-        `Added ${newName}`
-      )
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    
       const personObject = {
         name: newName,
         number: newNumber
@@ -160,7 +151,21 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
-      })
+        setClassName("success")
+        setMessage(
+          `Added ${newName}`
+        )
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setClassName("error")
+          setMessage(
+            error.response.data.error
+          )
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
     }
   }
 
